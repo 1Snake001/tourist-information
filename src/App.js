@@ -1,9 +1,10 @@
 import './App.scss';
+import Attractions from './components/Attractions';
 
 function App() {
   return (
-    <div className="constainer">
-  
+    <div className="container">
+     <Attractions/>
     </div>
   );
 }

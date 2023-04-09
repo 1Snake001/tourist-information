@@ -2,7 +2,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyC_cu4DdYVVkol-3_mmZbkr_Dhab0e2h18",
   authDomain: "tourist-information-5c213.firebaseapp.com",
