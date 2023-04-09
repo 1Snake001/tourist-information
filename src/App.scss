@@ -1,3 +1,12 @@
-.container{
-  text-align: center;
+@import '~bootstrap/scss/bootstrap.scss';
+
+.btn-primary, .btn-danger{
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+.form-control{
+  margin: 20px 0 20px 0;
+}
+.settlement-label, .post{
+  margin-top: 20px;
 }
