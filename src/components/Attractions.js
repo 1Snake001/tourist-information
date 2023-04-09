@@ -8,6 +8,7 @@ const Attractions = () => {
 
   const navigate = useNavigate();
 
+
   const getAttractions = async () => {
     const data = await attractionServices.getAllAttractions();
     setAttractions(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
@@ -16,6 +17,7 @@ const Attractions = () => {
   useEffect(() => {
     getAttractions();
   }, []);
+
 
   const settlementOptions = [
     "Mindegyik",

@@ -1,5 +1,6 @@
 @import '~bootstrap/scss/bootstrap.scss';
 
+
 .btn-primary, .btn-danger{
   margin-right: 5px;
   margin-bottom: 5px;
@@ -9,4 +10,8 @@
 }
 .settlement-label, .post{
   margin-top: 20px;
+}
+
+.btn-primary{
+  margin-right: 5px;
 }
