@@ -4,7 +4,7 @@ import AttracionsForm from './AttracionsForm';
 const NewAttraction = () => {
   return (
     <section>
-       <h1>Új látványosságok felvitele</h1>
+       <h1 className='title'>Új látványosságok felvitele</h1>
        <AttracionsForm type={"new"} />
     </section>
   )

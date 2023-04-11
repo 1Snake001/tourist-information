@@ -1,7 +1,7 @@
 import React from "react";
 
-const Input = ({ name, type, onChange, options, inputValue }) => {
-  console.log(inputValue[name]);
+const Input = ({ name, type, onChange, options, inputValue, onBlur, errorMessages}) => {
+ 
   let inputField;
 
   if (type === "select") {
@@ -9,9 +9,10 @@ const Input = ({ name, type, onChange, options, inputValue }) => {
       <div>
         <select
           value={inputValue[name]}
-          className={"form-select"}
+          className={`form-select ${errorMessages[name]!== '' ? 'danger': ''}`}
           onChange={onChange}
           name={name}
+          onBlur={onBlur}
         >
           {options.map((option) => (
             <option value={option.value} key={option.value}>
@@ -27,29 +28,34 @@ const Input = ({ name, type, onChange, options, inputValue }) => {
         value={inputValue[name]}
         onChange={onChange}
         name={name}
-        className="form-control"
+        className={`form-control ${errorMessages[name]!== '' ? 'danger': ''}`}
         rows="3"
+        onBlur={onBlur}
       />
     );
   } else {
     inputField = (
       <input
         onChange={onChange}
-        className="form-control"
+        className={`form-control ${errorMessages[name]!== '' ? 'danger': ''}`}
         value={inputValue[name]}
         type={type}
         name={name}
         placeholder=""
+        onBlur={onBlur}
       />
     );
   }
 
   return (
     <div>
-      <label htmlFor={name} className="form-label">
+      <label htmlFor={name} className = {`form-label`} >
         {name}
       </label>
       {inputField}
+      <div className="text-danger">
+       {errorMessages[name]}
+      </div>
     </div>
   );
 };

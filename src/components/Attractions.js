@@ -24,7 +24,7 @@ const Attractions = () => {
     ...new Set(attractions.map((attraction) => attraction.settlement)),
   ];
 
-  console.log(settlementOptions);
+
   const handleSettlementChange = (event) => {
     setFilteredSettlement(event.target.value);
   };
