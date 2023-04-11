@@ -40,6 +40,17 @@ function handleNavigateNewAttr(){
        navigate("/attraction/new")
 }
 
+
+async  function handleDelete(id){
+ await attractionServices.deleteAttraction(id)
+ await getAttractions();
+};
+
+async  function handleUpdateForm(attraction){
+ navigate(`/attraction/edit/${attraction.id}`);
+};
+
+
   return (
     <>
     <div>
@@ -83,8 +94,8 @@ function handleNavigateNewAttr(){
               <td>{attraction.price}</td>
               <td>{attraction.note}</td>
               <td>
-                <button className="btn btn-primary">Módosítás</button>
-                <button className="btn btn-danger">Törlés</button>
+                <button onClick={() => handleUpdateForm(attraction)} className="btn btn-primary">Módosítás</button>
+                <button onClick={() => handleDelete(attraction.id)} className="btn btn-danger">Törlés</button>
               </td>
             </tr>
           ))}

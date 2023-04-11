@@ -5,8 +5,9 @@
   margin-right: 5px;
   margin-bottom: 5px;
 }
-.form-control, .form-select{
-  margin: 0 0 20px 0;
+
+.form-label{
+  margin:20px 0 0  0;
 }
 .settlement-label, .post{
   margin-top: 20px;
@@ -14,6 +15,9 @@
 
 .btn-primary{
   margin-right: 5px;
+}
+.form-button, .table{
+  margin-top: 20px;
 }
 .danger{
   border: 1px red solid;

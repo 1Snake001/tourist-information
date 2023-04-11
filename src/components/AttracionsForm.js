@@ -1,72 +1,34 @@
 import { useState } from "react";
-/* import AttractionService from "../services/services"; */
+import attractionService from "../services/services";
+import {  useNavigate } from "react-router-dom";
 import Input from "./Input";
 import React from "react";
 
-const AttracionsForm = () => {
-  const [inputValue, setInputValue] = useState({
-    name: "",
-    settlement: "",
-    address: "",
-    category: "",
-    price: "",
-    note: "",
-  });
+const AttracionsForm = ({ type, attraction }) => {
 
-  const [errorMessages, setErrorMessages] = useState({
-    name: "",
-    settlement: "",
-    address: "",
-    category: "",
-    price: "",
-    note: "",
-  });
+  const id = type === "edit" ? attraction.id : null;
 
-  const texForErrorMessages = {
-    smallerThanNull: "Nem lehet kisebb, mint 0 !",
-    required: "Hiányzó érték !",
-    moreThan100: "Nem lehet több, mint 100 karakter !",
-  };
+  const navigate = useNavigate();
 
-  let validators = {
-    name: {
-      required: isNotEmpty,
-    },
-    settlement: {
-      required: isNotEmpty,
-    },
-    address: {
-      required: isNotEmpty,
-    },
-    category: {
-      required: isNotEmpty,
-    },
-    price: {
-      required: isNotEmpty,
-      smallerThanNull: isNotNegativ,
-    },
-    note: {
-      moreThan100: isNotLengthLessThan1000,
-    },
-  };
-
-  async function validator(name, value) {
-    let validator = validators[name];
-
-    setErrorMessages((previousErrors) => ({
-      ...previousErrors,
-      [name]: "",
-    }));
-
-    for (let v in validator) {
-      if (validator[v](value)) {
-        setErrorMessages((prevErr) => ({
-          ...prevErr,
-          [name]: texForErrorMessages[v],
-        }));
-      }
-    }
-  }
+  const [inputValues, setInputValues] = useState(
+    type === "edit"
+      ? {
+          name: attraction.attractionData.name,
+          settlement: attraction.attractionData.settlement,
+          address: attraction.attractionData.address,
+          category: attraction.attractionData.category,
+          price: attraction.attractionData.price,
+          note: attraction.attractionData.note,
+        }
+      : {
+          name: "",
+          settlement: "",
+          address: "",
+          category: "",
+          price: "",
+          note: "",
+        }
+  );
 
   function onBlurHandler(event) {
     validator(event.target.name, event.target.value);
@@ -85,7 +47,71 @@ const AttracionsForm = () => {
   }
 
   function inputHandleChange(event) {
-    setInputValue({ ...inputValue, [event.target.name]: event.target.value });
+    setInputValues({ ...inputValues, [event.target.name]: event.target.value });
+  }
+
+  const texForErrorMessages = {
+    smallerThanNull: "Nem lehet kisebb, mint 0 !",
+    requiredName: `Név kitöltése kötelező!`,
+    requiredSettliment:`Település kitöltése kötelező!`,
+    requiredAddress:`Cím kitöltése kötelező!`,
+    requiredCategory:`Kategória kitöltése kötelező!`,
+    requiredPrice:`Ár kitöltése kötelező!`,
+    moreThan100: "Nem lehet több, mint 100 karakter !",
+  };
+
+
+  let validators = {
+    name: {
+      requiredName: isNotEmpty,
+    },
+    settlement: {
+      requiredSettliment: isNotEmpty,
+    },
+    address: {
+      requiredAddress: isNotEmpty,
+    },
+    category: {
+      requiredCategory: isNotEmpty,
+    },
+    price: {
+      requiredPrice: isNotEmpty,
+      smallerThanNull: isNotNegativ,
+    },
+    note: {
+      moreThan100Note: isNotLengthLessThan1000,
+    },
+  };
+
+  const [errorMessages, setErrorMessages] = useState({
+    name: "",
+    settlement: "",
+    address: "",
+    category: "",
+    price: "",
+    note: "",
+  });
+
+  let isFormValid = true;
+
+  function validator(name, value) {
+    let validator = validators[name];
+
+    setErrorMessages((previousErrors) => ({
+      ...previousErrors,
+      [name]: "",
+    }));
+
+   
+    for (let v in validator) {
+      if (validator[v](value)) {
+        setErrorMessages((prevErr) => ({
+          ...prevErr,
+          [name]: texForErrorMessages[v],
+        }));
+         isFormValid = false;
+      }
+    }
   }
 
   const categoryOptions = [
@@ -107,18 +133,21 @@ const AttracionsForm = () => {
     },
   ];
 
-  let isFormValid = Object.values(errorMessages).every((v) => v === "");
-  
   async function submitHandler(event) {
     event.preventDefault();
 
-    for (let k in inputValue) {
-      validator(k, inputValue[k]);
+    for (let k in inputValues) {
+      validator(k, inputValues[k]);
     }
 
     if (isFormValid === true) {
-    
-      setInputValue({
+      if (type === "new") {
+        await attractionService.addAttractions(inputValues);
+      }
+      if (type === "edit") {
+        await attractionService.updateAttraction(id, inputValues);
+      }
+      setInputValues({
         name: "",
         settlement: "",
         address: "",
@@ -126,10 +155,21 @@ const AttracionsForm = () => {
         price: "",
         note: "",
       });
+    }else{
+      setInputValues(inputValues);
+      return
     }
   }
 
+  function navigateHandle(){
+    navigate("/")
+  }
+
   return (
+  <>
+  <div>
+    <button className="btn btn-primary" onClick={navigateHandle}>Látványosságok listája</button>
+  </div>
     <form onSubmit={submitHandler}>
       <Input
         name="name"
@@ -137,7 +177,7 @@ const AttracionsForm = () => {
         onBlur={onBlurHandler}
         onChange={inputHandleChange}
         type="text"
-        inputValue={inputValue}
+        inputValue={inputValues["name"]}
       />
       <Input
         name="settlement"
@@ -145,7 +185,7 @@ const AttracionsForm = () => {
         onBlur={onBlurHandler}
         onChange={inputHandleChange}
         type="text"
-        inputValue={inputValue}
+        inputValue={inputValues["settlement"]}
       />
       <Input
         name="address"
@@ -153,7 +193,7 @@ const AttracionsForm = () => {
         onBlur={onBlurHandler}
         onChange={inputHandleChange}
         type="text"
-        inputValue={inputValue}
+        inputValue={inputValues["address"]}
       />
       <Input
         name="category"
@@ -162,7 +202,7 @@ const AttracionsForm = () => {
         onChange={inputHandleChange}
         type="select"
         options={categoryOptions}
-        inputValue={inputValue}
+        inputValue={inputValues["category"]}
       />
       <Input
         name="price"
@@ -170,7 +210,7 @@ const AttracionsForm = () => {
         onBlur={onBlurHandler}
         onChange={inputHandleChange}
         type="text"
-        inputValue={inputValue}
+        inputValue={inputValues["price"]}
       />
       <Input
         name="note"
@@ -178,10 +218,11 @@ const AttracionsForm = () => {
         onBlur={onBlurHandler}
         onChange={inputHandleChange}
         type="textarea"
-        inputValue={inputValue}
+        inputValue={inputValues["note"]}
       />
-      <button className="btn btn-primary">Küldés</button>
+      <button className="btn btn-primary form-button">Küldés</button>
     </form>
+  </>
   );
 };
 

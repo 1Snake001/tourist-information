@@ -1,15 +1,24 @@
 import React from "react";
 
-const Input = ({ name, type, onChange, options, inputValue, onBlur, errorMessages}) => {
- 
+const Input = ({
+  name,
+  type,
+  onChange,
+  options,
+  inputValue,
+  onBlur,
+  errorMessages,
+}) => {
   let inputField;
 
   if (type === "select") {
     inputField = (
       <div>
         <select
-          value={inputValue[name]}
-          className={`form-select ${errorMessages[name]!== '' ? 'danger': ''}`}
+          value={inputValue}
+          className={`form-select ${
+            errorMessages[name] !== "" ? "danger" : ""
+          }`}
           onChange={onChange}
           name={name}
           onBlur={onBlur}
@@ -25,10 +34,10 @@ const Input = ({ name, type, onChange, options, inputValue, onBlur, errorMessage
   } else if (type === "textarea") {
     inputField = (
       <textarea
-        value={inputValue[name]}
+        value={inputValue}
         onChange={onChange}
         name={name}
-        className={`form-control ${errorMessages[name]!== '' ? 'danger': ''}`}
+        className={`form-control ${errorMessages[name] !== "" ? "danger" : ""}`}
         rows="3"
         onBlur={onBlur}
       />
@@ -37,8 +46,8 @@ const Input = ({ name, type, onChange, options, inputValue, onBlur, errorMessage
     inputField = (
       <input
         onChange={onChange}
-        className={`form-control ${errorMessages[name]!== '' ? 'danger': ''}`}
-        value={inputValue[name]}
+        className={`form-control ${errorMessages[name] !== "" ? "danger" : ""}`}
+        value={inputValue}
         type={type}
         name={name}
         placeholder=""
@@ -49,13 +58,11 @@ const Input = ({ name, type, onChange, options, inputValue, onBlur, errorMessage
 
   return (
     <div>
-      <label htmlFor={name} className = {`form-label`} >
+      <label htmlFor={name} className={`form-label`}>
         {name}
       </label>
       {inputField}
-      <div className="text-danger">
-       {errorMessages[name]}
-      </div>
+      <div className="text-danger">{errorMessages[name]}</div>
     </div>
   );
 };
