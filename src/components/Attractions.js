@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import attractionServices from "../services/services";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Attractions = () => {
   const [attractions, setAttractions] = useState([]);
   const [filteredSettlement, setFilteredSettlement] = useState("Mindegyik");
 
   const navigate = useNavigate();
-
 
   const getAttractions = async () => {
     const data = await attractionServices.getAllAttractions();
@@ -18,46 +17,52 @@ const Attractions = () => {
     getAttractions();
   }, []);
 
-
   const settlementOptions = [
     "Mindegyik",
     ...new Set(attractions.map((attraction) => attraction.settlement)),
   ];
-
 
   const handleSettlementChange = (event) => {
     setFilteredSettlement(event.target.value);
   };
 
   const filteredAttractions =
-  filteredSettlement === "Mindegyik"
-    ? attractions
-    : attractions.filter(
-        (attraction) => attraction.settlement === filteredSettlement
-      );
+    filteredSettlement === "Mindegyik"
+      ? attractions
+      : attractions.filter(
+          (attraction) => attraction.settlement === filteredSettlement
+        );
 
-function handleNavigateNewAttr(){
-       navigate("/attraction/new")
-}
+  function handleNavigateNewAttr() {
+    navigate("/attraction/new");
+  }
 
+  async function handleDelete(id) {
+    await attractionServices.deleteAttraction(id);
+    await getAttractions();
+  }
 
-async  function handleDelete(id){
- await attractionServices.deleteAttraction(id)
- await getAttractions();
-};
-
-async  function handleUpdateForm(attraction){
- navigate(`/attraction/edit/${attraction.id}`);
-};
-
+  async function handleUpdateForm(attraction) {
+    navigate(`/attraction/edit/${attraction.id}`);
+  }
 
   return (
     <>
-    <div>
-      <button onClick={handleNavigateNewAttr} className="btn btn-primary post">Felvitel</button>
-    </div>
       <div>
-        <label className="settlement-label" htmlFor="settlement">Város:</label>
+        <h1>Látványosságok</h1>
+      </div>
+      <div>
+        <button
+          onClick={handleNavigateNewAttr}
+          className="btn btn-primary post"
+        >
+          Felvitel
+        </button>
+      </div>
+      <div>
+        <label className="settlement-label" htmlFor="settlement">
+          Város:
+        </label>
         <select
           id="settlement"
           name="settlement"
@@ -94,8 +99,18 @@ async  function handleUpdateForm(attraction){
               <td>{attraction.price}</td>
               <td>{attraction.note}</td>
               <td>
-                <button onClick={() => handleUpdateForm(attraction)} className="btn btn-primary">Módosítás</button>
-                <button onClick={() => handleDelete(attraction.id)} className="btn btn-danger">Törlés</button>
+                <button
+                  onClick={() => handleUpdateForm(attraction)}
+                  className="btn btn-primary"
+                >
+                  Módosítás
+                </button>
+                <button
+                  onClick={() => handleDelete(attraction.id)}
+                  className="btn btn-danger"
+                >
+                  Törlés
+                </button>
               </td>
             </tr>
           ))}

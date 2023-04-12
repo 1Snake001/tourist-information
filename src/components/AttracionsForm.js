@@ -30,6 +30,9 @@ const AttracionsForm = ({ type, attraction }) => {
         }
   );
 
+  const [formAlertText, setFormAlertText] = useState('');
+  const [formAlertType, setFormAlertType] = useState('');
+
   function onBlurHandler(event) {
     validator(event.target.name, event.target.value);
   }
@@ -143,9 +146,13 @@ const AttracionsForm = ({ type, attraction }) => {
     if (isFormValid === true) {
       if (type === "new") {
         await attractionService.addAttractions(inputValues);
+        setFormAlertText('Sikeres mentés!');
+        setFormAlertType('success');
       }
       if (type === "edit") {
         await attractionService.updateAttraction(id, inputValues);
+        setFormAlertText('Sikeres módosítás!');
+        setFormAlertType('success');
       }
       setInputValues({
         name: "",
@@ -222,6 +229,11 @@ const AttracionsForm = ({ type, attraction }) => {
       />
       <button className="btn btn-primary form-button">Küldés</button>
     </form>
+    {formAlertText && (
+        <div className={`alert mt-3 alert-${formAlertType}`} role="alert">
+          {formAlertText}
+        </div>
+      )}
   </>
   );
 };
