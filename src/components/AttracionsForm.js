@@ -63,7 +63,6 @@ const AttracionsForm = ({ type, attraction }) => {
     moreThan100: "Nem lehet több, mint 100 karakter !",
   };
 
-
   let validators = {
     name: {
       requiredName: isNotEmpty,
@@ -142,7 +141,7 @@ const AttracionsForm = ({ type, attraction }) => {
     for (let k in inputValues) {
       validator(k, inputValues[k]);
     }
-
+    
     if (isFormValid === true) {
       if (type === "new") {
         await attractionService.addAttractions(inputValues);
@@ -185,6 +184,7 @@ const AttracionsForm = ({ type, attraction }) => {
         onChange={inputHandleChange}
         type="text"
         inputValue={inputValues["name"]}
+        isFormValid={isFormValid}
       />
       <Input
         name="settlement"
@@ -193,6 +193,7 @@ const AttracionsForm = ({ type, attraction }) => {
         onChange={inputHandleChange}
         type="text"
         inputValue={inputValues["settlement"]}
+        isFormValid={isFormValid}
       />
       <Input
         name="address"
@@ -201,6 +202,7 @@ const AttracionsForm = ({ type, attraction }) => {
         onChange={inputHandleChange}
         type="text"
         inputValue={inputValues["address"]}
+        isFormValid={isFormValid}
       />
       <Input
         name="category"
@@ -210,6 +212,7 @@ const AttracionsForm = ({ type, attraction }) => {
         type="select"
         options={categoryOptions}
         inputValue={inputValues["category"]}
+        isFormValid={isFormValid}
       />
       <Input
         name="price"
@@ -218,6 +221,7 @@ const AttracionsForm = ({ type, attraction }) => {
         onChange={inputHandleChange}
         type="text"
         inputValue={inputValues["price"]}
+        isFormValid={isFormValid}
       />
       <Input
         name="note"
@@ -226,6 +230,7 @@ const AttracionsForm = ({ type, attraction }) => {
         onChange={inputHandleChange}
         type="textarea"
         inputValue={inputValues["note"]}
+        isFormValid={isFormValid}
       />
       <button className="btn btn-primary form-button">Küldés</button>
     </form>
